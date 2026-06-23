@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+
+    <link rel="stylesheet" href="g-style.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+<body>
+
+    <!--  NAVBAR  -->
+    <nav class="navbar">
+        <div class="left-side">
+            <button class="hamburger-menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <img src="IMAGES/unnamed.png" alt="Logo" class="bulb-img">
+            <h1> Keep </h1>
+        </div>
+
+        <div class="right-side">
+            <button id="search-btn">
+                <i class="fa-solid fa-magnifying-glass"></i></button>
+            <button id="refresh-btn">
+                <i class="fa-solid fa-rotate-right"></i></button>
+            <button id="settings-btn">
+                <i class="fa-solid fa-gear"></i></button>
+            <button id="apps-btn">
+                <i class="fa-solid fa-table-cells-large"></i></button>
+            <button id="profile-btn">
+                <i class="fa-solid fa-circle-user"></i></button>
+        </div>
+    </nav>
+
+    <!--  MAIN  -->
+    <main>
+
+        <!--  SIDEBAR  -->
+        <aside class="sidebar">
+            <button class="sidebar-btn" id="notes-btn">
+                <div class="icon-box">
+                    <i class="fa-regular fa-lightbulb"></i>
+                </div>
+
+                <div class="text-box">
+                    <span>Notes</span>
+                </div>
+            </button>
+
+            <button class="sidebar-btn" id="reminders-btn">
+                <div class="icon-box">
+                    <i class="fa-regular fa-bell"></i>
+                </div>
+
+                <div class="text-box">
+                    <span>Reminders</span>
+                </div>
+            </button>
+
+            <button class="sidebar-btn" id="labels-btn">
+                <div class="icon-box">
+                    <i class="fa-solid fa-tag"></i>
+                </div>
+
+                <div class="text-box">
+                    <span>Edit labels</span>
+                </div>
+            </button>
+
+            <button class="sidebar-btn" id="archive-btn">
+                <div class="icon-box">
+                    <i class="fa-solid fa-box-archive"></i>
+                </div>
+
+                <div class="text-box">
+                    <span>Archive</span>
+                </div>
+            </button>
+
+            <button class="sidebar-btn" id="trash-btn">
+                <div class="icon-box">
+                    <i class="fa-regular fa-trash-can"></i>
+                </div>
+
+                <div class="text-box">
+                    <span>Bin</span>
+                </div>
+            </button>
+        </aside>
+
+        <!--  NOTES CONTAINER  -->
+        <section class="notes-container">
+
+            <!--  ADD NOTE  -->
+            <div class="add-note">
+
+                <!-- Collapsed Input -->
+                <div class="input-wrapper">
+
+                    <textarea class="add-input" placeholder="Take a note..." rows="1" autofocus></textarea>
+
+                    <div class="collapsed-icons">
+                        <button><i class="fa-regular fa-square-check"></i></button>
+                        <button><i class="fa-regular fa-pen-to-square"></i></button>
+                        <button><i class="fa-regular fa-image"></i></button>
+                    </div>
+
+                </div>
+
+                <!-- Expanded View -->
+                <div class="expanded-section hidden">
+
+                    <textarea class="title-input" placeholder="Title" rows="1"></textarea>
+
+                    <textarea class="note-body" placeholder="Take a note..." rows="1"></textarea>
+
+                    <!-- Expanded Icons -->
+                    <div class="expanded-icons">
+                        <button><i class="fa-regular fa-square-check"></i></button>
+                        <button><i class="fa-solid fa-paintbrush"></i></button>
+                        <button><i class="fa-regular fa-image"></i></button>
+                        <button><i class="fa-solid fa-user-plus"></i></button>
+                        <button><i class="fa-solid fa-palette"></i></button>
+                        <button><i class="fa-solid fa-image"></i></button>
+                        <button><i class="fa-solid fa-box-archive"></i></button>
+                        <button><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                        <button><i class="fa-solid fa-rotate-left"></i></button>
+                    </div>
+
+                    <!-- Close Button -->
+                    <div class="close-row">
+                        <button class="close-btn">Close</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!--  NOTES GRID  -->
+            <div class="notes-grid"></div>
+        </section>
+    </main>
+
+    <script src="g-script.js"></script>
+</body>
+
+</html>
