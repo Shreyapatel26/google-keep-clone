@@ -31,6 +31,9 @@ const notesGrid = document.querySelector(".notes-grid");
 // overlay/notes editing
 const overlay = document.querySelector(".overlay");
 
+// a counter for pinning function
+let noteOrder = 0;
+
 
 // expand when clicking the input
 inputWrapper.addEventListener("click", () => {
@@ -79,8 +82,18 @@ function createNote(title, body) {
     const note = document.createElement("div");
     note.className = "note";
 
+    // every note will have its own order
+    note.dataset.order = noteOrder;
+    noteOrder++;
+
     note.innerHTML = `
-    <textarea class="note-title" readonly>${title}</textarea>
+    <div class="note-header">
+        <textarea class="note-title" readonly>${title}</textarea>
+        <button class="pin-note-btn">
+            <i class="fa-solid fa-thumbtack"></i>
+        </button>
+    </div>
+
     <textarea class="note-text" readonly>${body}</textarea>
 
    <div class="note-footer">
@@ -107,6 +120,7 @@ function createNote(title, body) {
     const titleElement = note.querySelector(".note-title");
     const bodyElement = note.querySelector(".note-text");
     const editCloseBtn = note.querySelector(".edit-close-btn");
+    const pinBtn = note.querySelector(".pin-note-btn");
 
     autoGrow(titleElement);
     autoGrow(bodyElement);
@@ -132,12 +146,42 @@ function createNote(title, body) {
 
     });
 
+    // close button for opened note
     editCloseBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         titleElement.readOnly = true;
         bodyElement.readOnly = true;
         note.classList.remove("editing");
         overlay.classList.add("hidden");
+    });
+
+    pinBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        note.classList.toggle("pinned");
+        sortNotes();
+    });
+
+}
+
+// pin notes function
+function sortNotes() {
+
+    const notes = [...notesGrid.children];
+
+    notes.sort((a, b) => {
+        const aPinned = a.classList.contains("pinned");
+        const bPinned = b.classList.contains("pinned");
+
+        // pinned notes first
+        if (aPinned && !bPinned) return -1;
+        if (!aPinned && bPinned) return 1;
+
+        // otherwise keep original order
+        return Number(a.dataset.order) - Number(b.dataset.order);
+    });
+
+    notes.forEach(note => {
+        notesGrid.appendChild(note);
     });
 
 }
