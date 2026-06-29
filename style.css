@@ -455,6 +455,22 @@ main {
     opacity: 1;
 }
 
+/* trash icons */
+.trash-icons{
+    display:flex;
+    gap:10px;
+    margin: 0 0 10px -10px;
+    opacity:0;
+    transition:opacity .15s ease;
+}
+.trash-icons i{
+    font-size:20px;
+}
+.note:hover .trash-icons{
+    opacity:1;
+}
+
+
 /* OVERLAY */
 .overlay{
     position:fixed;

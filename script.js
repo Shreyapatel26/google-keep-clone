@@ -16,6 +16,7 @@ buttons.forEach(button => {
     });
 });
 
+
 // selecting elements for note taking
 const addNote = document.querySelector(".add-note");
 const inputWrapper = document.querySelector(".input-wrapper");
@@ -31,8 +32,16 @@ const notesGrid = document.querySelector(".notes-grid");
 // overlay/notes editing
 const overlay = document.querySelector(".overlay");
 
+// selecting bin
+const trashBin = document.querySelector("#trash-btn");
+const notesBtn = document.querySelector("#notes-btn");
+
 // a counter for pinning function
 let noteOrder = 0;
+
+// storing active and deleted notes
+const activeNotes = [];
+const deletedNotes = [];
 
 
 // expand when clicking the input
@@ -97,20 +106,17 @@ function createNote(title, body) {
     <textarea class="note-text" readonly>${body}</textarea>
 
    <div class="note-footer">
-        <div class="note-icons">
 
+        <div class="note-icons">
             <button><i class="fa-solid fa-palette"></i></button>
             <button><i class="fa-regular fa-bell"></i></button>
             <button><i class="fa-solid fa-user-plus"></i></button>
             <button><i class="fa-regular fa-image"></i></button>
             <button><i class="fa-solid fa-box-archive"></i></button>
-
             <div class="menu-wrapper">
-
                 <button class="menu-btn">
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </button>
-
                 <div class="note-menu hidden">
                     <button class="delete-btn">Delete note</button>
                     <button class="label-btn">Add label</button>
@@ -120,10 +126,19 @@ function createNote(title, body) {
                     <button class="docs-btn">Copy to Google Docs</button>
                     <button class="history-btn">Version history</button>
                 </div>
-
             </div>
-
         </div>
+
+
+        <div class="trash-icons hidden">
+            <button class="restore-btn">
+                <i class="fa-solid fa-trash-arrow-up"></i>
+            </button>
+            <button class="delete-forever-btn">
+                <i class="fa-solid fa-trash-can"></i>
+            </button>
+        </div>
+
 
         <div class="edit-close-row">
             <button class="edit-close-btn">Close</button>
@@ -133,6 +148,7 @@ function createNote(title, body) {
 `;
 
     notesGrid.appendChild(note);
+    activeNotes.push(note);
 
     const titleElement = note.querySelector(".note-title");
     const bodyElement = note.querySelector(".note-text");
@@ -142,7 +158,11 @@ function createNote(title, body) {
     // menu in every note
     const menuBtn = note.querySelector(".menu-btn");
     const noteMenu = note.querySelector(".note-menu");
+
     const deleteBtn = note.querySelector(".delete-btn");
+
+    const restoreBtn = note.querySelector(".restore-btn");
+    const deleteForeverBtn = note.querySelector(".delete-forever-btn");
 
     autoGrow(titleElement);
     autoGrow(bodyElement);
@@ -177,19 +197,68 @@ function createNote(title, body) {
         overlay.classList.add("hidden");
     });
 
+    // pin note icon button
     pinBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         note.classList.toggle("pinned");
         sortNotes();
     });
 
+    // three dot menu expansion in every note
     menuBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         noteMenu.classList.toggle("hidden");
     });
 
+    // delete note button
+    // delete note button
     deleteBtn.addEventListener("click", (e) => {
         e.stopPropagation();
+
+        // remove from active array
+        const index = activeNotes.indexOf(note);
+        if (index > -1) {
+            activeNotes.splice(index, 1);
+        }
+
+        // switch icons
+        note.querySelector(".note-icons").classList.add("hidden");
+        note.querySelector(".trash-icons").classList.remove("hidden");
+        note.querySelector(".pin-note-btn").classList.add("hidden");
+
+        deletedNotes.push(note);
+        note.remove();
+    });
+
+    // restore button
+    restoreBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        const index = deletedNotes.indexOf(note);
+        if (index > -1) {
+            deletedNotes.splice(index, 1);
+        }
+
+        activeNotes.push(note);
+
+        note.querySelector(".trash-icons").classList.add("hidden");
+        note.querySelector(".note-icons").classList.remove("hidden");
+        note.querySelector(".pin-note-btn").classList.remove("hidden");
+
+        // notesGrid.appendChild(note);
+        sortNotes();
+        renderNotes(deletedNotes);
+
+    });
+
+    // delete forever
+    deleteForeverBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        const index = deletedNotes.indexOf(note);
+        if (index > -1) {
+            deletedNotes.splice(index, 1);
+        }
 
         note.remove();
     });
@@ -220,6 +289,14 @@ function sortNotes() {
 
 }
 
+// takes activeNotes or deletedNotes array and displays it
+function renderNotes(notesArray) {
+    notesGrid.innerHTML = "";
+    notesArray.forEach(note => {
+        notesGrid.appendChild(note);
+    });
+}
+
 overlay.addEventListener("click", () => {
 
     const editingNote = document.querySelector(".note.editing");
@@ -229,4 +306,17 @@ overlay.addEventListener("click", () => {
     editingNote.classList.remove("editing");
     overlay.classList.add("hidden");
 
+});
+
+notesBtn.addEventListener("click", () => {
+
+    addNote.classList.remove("hidden");
+    renderNotes(activeNotes);
+});
+
+// Show deleted notes in the bin
+trashBin.addEventListener("click", () => {
+
+    addNote.classList.add("hidden");
+    renderNotes(deletedNotes);
 });
