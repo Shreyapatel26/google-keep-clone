@@ -104,7 +104,24 @@ function createNote(title, body) {
             <button><i class="fa-solid fa-user-plus"></i></button>
             <button><i class="fa-regular fa-image"></i></button>
             <button><i class="fa-solid fa-box-archive"></i></button>
-            <button><i class="fa-solid fa-ellipsis-vertical"></i></button>
+
+            <div class="menu-wrapper">
+
+                <button class="menu-btn">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+
+                <div class="note-menu hidden">
+                    <button class="delete-btn">Delete note</button>
+                    <button class="label-btn">Add label</button>
+                    <button class="drawing-btn">Add drawing</button>
+                    <button class="copy-btn">Make a copy</button>
+                    <button class="checkbox-btn">Show checkboxes</button>
+                    <button class="docs-btn">Copy to Google Docs</button>
+                    <button class="history-btn">Version history</button>
+                </div>
+
+            </div>
 
         </div>
 
@@ -121,6 +138,11 @@ function createNote(title, body) {
     const bodyElement = note.querySelector(".note-text");
     const editCloseBtn = note.querySelector(".edit-close-btn");
     const pinBtn = note.querySelector(".pin-note-btn");
+
+    // menu in every note
+    const menuBtn = note.querySelector(".menu-btn");
+    const noteMenu = note.querySelector(".note-menu");
+    const deleteBtn = note.querySelector(".delete-btn");
 
     autoGrow(titleElement);
     autoGrow(bodyElement);
@@ -160,6 +182,18 @@ function createNote(title, body) {
         note.classList.toggle("pinned");
         sortNotes();
     });
+
+    menuBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        noteMenu.classList.toggle("hidden");
+    });
+
+    deleteBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        note.remove();
+    });
+
 
 }
 
